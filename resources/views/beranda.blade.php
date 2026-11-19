@@ -368,16 +368,11 @@
                 </div>
             </div>
 
-            <!-- Tag Pills Row (kata populer dari basis data / default) -->
+            <!-- Tag Pills Row (kata populer murni dari basis data) -->
             <div class="flex flex-wrap gap-3 sm:gap-3.5 items-center">
-                @php
-                    $defaultKata = ['Mama', 'Tana', 'Wai', 'Suku', 'Mata', 'Hane', 'Kari', 'Nda', 'Leko', 'Buku'];
-                    $daftarKata = (isset($kataPopuler) && count($kataPopuler) > 0) ? $kataPopuler : $defaultKata;
-                @endphp
-
-                @foreach($daftarKata as $item)
+                @forelse($kataPopuler as $item)
                     @php
-                        $namaKata = is_object($item) ? ($item->kata_wemale ?? $item->nama ?? '') : $item;
+                        $namaKata = is_object($item) ? ($item->kata_wemale ?? '') : $item;
                     @endphp
                     <button 
                         type="button"
@@ -386,7 +381,9 @@
                     >
                         {{ $namaKata }}
                     </button>
-                @endforeach
+                @empty
+                    <p class="text-sm text-slate-400 italic">Belum ada kosakata populer yang ditandai di dalam sistem.</p>
+                @endforelse
             </div>
 
         </section>

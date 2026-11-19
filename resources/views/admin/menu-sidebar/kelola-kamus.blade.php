@@ -42,7 +42,7 @@
                 <i class="fa-solid fa-arrow-trend-up"></i>
             </div>
             <div>
-                <h4 class="text-2xl font-black text-[#0C2B5E]">+18</h4>
+                <h4 class="text-2xl font-black text-[#0C2B5E]">+{{ $penambahanBulanIni ?? 0 }}</h4>
                 <p class="text-xs text-slate-500 font-medium">Penambahan Bulan Ini</p>
             </div>
         </div>
@@ -63,7 +63,7 @@
                     <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="searchInput" placeholder="Cari kata atau arti..." 
+                    <input type="text" id="searchInput" placeholder="Cari kata atau arti..." oninput="filterKataTable(this.value)"
                            class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20 w-48 sm:w-64">
                 </div>
 
@@ -78,7 +78,7 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse" id="kataTable">
                 <thead>
                     <tr class="bg-slate-50/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
                         <th class="py-3.5 px-6">No</th>
@@ -92,7 +92,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
                     @forelse($katas as $index => $kata)
-                        <tr class="hover:bg-slate-50/60 transition">
+                        <tr class="hover:bg-slate-50/60 transition kata-row" data-wemale="{{ strtolower($kata->kata_wemale) }}" data-arti="{{ strtolower($kata->arti_indonesia) }}">
                             <td class="py-4 px-6 text-slate-400">{{ $index + 1 }}</td>
                             <td class="py-4 px-6">
                                 <span class="font-extrabold text-[#0C2B5E] text-sm">{{ $kata->kata_wemale }}</span>
@@ -126,12 +126,19 @@
                             </td>
                             <td class="py-4 px-6 text-center">
                                 <div class="inline-flex items-center gap-1.5">
-                                    <button class="p-1.5 rounded-lg text-slate-500 hover:text-[#133E87] hover:bg-slate-100 transition" title="Edit">
+                                    <button type="button" 
+                                            onclick="openEditKataModal({{ json_encode($kata) }})" 
+                                            class="p-1.5 rounded-lg text-slate-500 hover:text-[#133E87] hover:bg-slate-100 transition" 
+                                            title="Edit Kosakata">
                                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                                     </button>
-                                    <button class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition" title="Hapus">
-                                        <i class="fa-solid fa-trash text-xs"></i>
-                                    </button>
+                                    <form action="{{ route('admin.kelola-kamus.destroy', $kata) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kosakata &quot;{{ $kata->kata_wemale }}&quot;?');" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition" title="Hapus Kosakata">
+                                            <i class="fa-solid fa-trash text-xs"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -151,28 +158,30 @@
 
     <!-- Modal Tambah Kata -->
     <div id="modalTambahKata" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
                 <h3 class="text-lg font-bold text-[#0C2B5E]">Tambah Kosakata Baru</h3>
-                <button onclick="document.getElementById('modalTambahKata').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">
+                <button type="button" onclick="document.getElementById('modalTambahKata').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <form class="space-y-4">
+            <form action="{{ route('admin.kelola-kamus.store') }}" method="POST" class="space-y-4">
+                @csrf
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Kosakata Bahasa Wemale</label>
-                    <input type="text" placeholder="Contoh: Male, Sou, dll." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kosakata Bahasa Wemale <span class="text-rose-500">*</span></label>
+                    <input type="text" name="kata_wemale" required placeholder="Contoh: Male, Sou, Aman" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20 font-semibold">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Arti Bahasa Indonesia</label>
-                    <input type="text" placeholder="Contoh: Manusia, Bicara, dll." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Arti Bahasa Indonesia <span class="text-rose-500">*</span></label>
+                    <input type="text" name="arti_indonesia" required placeholder="Contoh: Manusia, Bicara, Negeri" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
-                    <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
+                    <select name="kategori_id" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
+                        <option value="">-- Pilih Kategori --</option>
                         @foreach($kategoris ?? [] as $kat)
                             <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
                         @endforeach
@@ -181,24 +190,115 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Contoh Kalimat (Wemale)</label>
-                    <textarea rows="2" placeholder="Contoh penggunaan kata dalam kalimat..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20"></textarea>
+                    <textarea name="contoh" rows="2" placeholder="Contoh penggunaan kata dalam kalimat Wemale..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20"></textarea>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Terjemahan Contoh (Indonesia)</label>
-                    <textarea rows="2" placeholder="Arti dari kalimat contoh..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20"></textarea>
+                    <textarea name="terjemahan_contoh" rows="2" placeholder="Arti dari kalimat contoh..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20"></textarea>
                 </div>
 
                 <div class="flex items-center gap-2 pt-1">
-                    <input type="checkbox" id="populerCheck" class="rounded text-[#133E87] focus:ring-0">
+                    <input type="checkbox" name="is_populer" value="1" id="populerCheck" class="rounded text-[#133E87] focus:ring-0">
                     <label for="populerCheck" class="text-xs font-semibold text-slate-700 cursor-pointer">Tandai sebagai Kata Populer</label>
                 </div>
 
-                <div class="pt-3 flex items-center justify-end gap-3">
+                <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
                     <button type="button" onclick="document.getElementById('modalTambahKata').classList.add('hidden')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 transition">Batal</button>
-                    <button type="button" onclick="alert('Kosakata berhasil disimpan'); document.getElementById('modalTambahKata').classList.add('hidden');" class="bg-[#133E87] text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md hover:bg-[#0C2B5E] transition">Simpan Kosakata</button>
+                    <button type="submit" class="bg-[#133E87] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-[#0C2B5E] transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Simpan Kosakata</span>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Modal Edit Kata -->
+    <div id="modalEditKata" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+                <h3 class="text-lg font-bold text-[#0C2B5E]">Edit Kosakata Wemale</h3>
+                <button type="button" onclick="document.getElementById('modalEditKata').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="formEditKata" method="POST" class="space-y-4">
+                @csrf
+                @method('PUT')
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kosakata Bahasa Wemale <span class="text-rose-500">*</span></label>
+                    <input type="text" id="editKataWemale" name="kata_wemale" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20 font-semibold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Arti Bahasa Indonesia <span class="text-rose-500">*</span></label>
+                    <input type="text" id="editArtiIndonesia" name="arti_indonesia" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
+                    <select id="editKategoriId" name="kategori_id" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20">
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach($kategoris ?? [] as $kat)
+                            <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Contoh Kalimat (Wemale)</label>
+                    <textarea id="editContoh" name="contoh" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Terjemahan Contoh (Indonesia)</label>
+                    <textarea id="editTerjemahanContoh" name="terjemahan_contoh" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#133E87]/20"></textarea>
+                </div>
+
+                <div class="flex items-center gap-2 pt-1">
+                    <input type="checkbox" name="is_populer" value="1" id="editPopulerCheck" class="rounded text-[#133E87] focus:ring-0">
+                    <label for="editPopulerCheck" class="text-xs font-semibold text-slate-700 cursor-pointer">Tandai sebagai Kata Populer</label>
+                </div>
+
+                <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="document.getElementById('modalEditKata').classList.add('hidden')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 transition">Batal</button>
+                    <button type="submit" class="bg-[#133E87] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-[#0C2B5E] transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Simpan Perubahan</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditKataModal(kata) {
+            const form = document.getElementById('formEditKata');
+            form.action = `/admin/kelola-kamus/${kata.id}`;
+
+            document.getElementById('editKataWemale').value = kata.kata_wemale || '';
+            document.getElementById('editArtiIndonesia').value = kata.arti_indonesia || '';
+            document.getElementById('editKategoriId').value = kata.kategori_id || '';
+            document.getElementById('editContoh').value = kata.contoh || '';
+            document.getElementById('editTerjemahanContoh').value = kata.terjemahan_contoh || '';
+            document.getElementById('editPopulerCheck').checked = Boolean(kata.is_populer);
+
+            document.getElementById('modalEditKata').classList.remove('hidden');
+        }
+
+        function filterKataTable(query) {
+            const q = query.toLowerCase();
+            document.querySelectorAll('.kata-row').forEach(row => {
+                const wemale = row.getAttribute('data-wemale') || '';
+                const arti = row.getAttribute('data-arti') || '';
+                if (wemale.includes(q) || arti.includes(q)) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 @endsection

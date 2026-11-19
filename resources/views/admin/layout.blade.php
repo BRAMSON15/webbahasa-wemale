@@ -88,6 +88,58 @@
 
         <!-- Dynamic Body Content -->
         <main class="p-6 md:p-8 space-y-6 flex-1">
+            @if(session('success'))
+                <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs flex items-center justify-between shadow-2xs">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <div>
+                            <h5 class="font-extrabold text-sm text-emerald-900">Berhasil!</h5>
+                            <p class="text-xs text-emerald-700 mt-0.5">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700 p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs flex items-center justify-between shadow-2xs">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </span>
+                        <div>
+                            <h5 class="font-extrabold text-sm text-rose-900">Terjadi Kesalahan</h5>
+                            <p class="text-xs text-rose-700 mt-0.5">{{ session('error') }}</p>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-rose-500 hover:text-rose-700 p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs shadow-2xs">
+                    <div class="flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shrink-0 mt-0.5">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </span>
+                        <div>
+                            <h5 class="font-extrabold text-sm text-amber-900">Periksa Input Formulir:</h5>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 text-xs text-amber-800">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
 

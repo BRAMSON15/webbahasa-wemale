@@ -13,15 +13,18 @@ class BerandaController extends Controller
      */
     public function index()
     {
-        $kataPopuler = Kata::populer()
+        $semuaKata = Kata::with('kategori')
             ->orderBy('kata_wemale')
             ->get();
 
-        // Struktur data siap pakai untuk JavaScript (objek kata -> detail)
-        $kamusData = $kataPopuler->mapWithKeys(fn (Kata $kata) => [
+        $kataPopuler = $semuaKata->where('is_populer', true)->values();
+
+        // Struktur data kamus murni dari data inputan di database
+        $kamusData = $semuaKata->mapWithKeys(fn (Kata $kata) => [
             $kata->kata_wemale => [
                 'word' => $kata->kata_wemale,
                 'meaning' => $kata->arti_indonesia,
+                'category' => $kata->kategori?->nama_kategori ?? 'Umum',
                 'example' => $kata->contoh ?? '',
                 'exampleTrans' => $kata->terjemahan_contoh ?? '',
             ],

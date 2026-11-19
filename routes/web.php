@@ -39,10 +39,35 @@ Route::middleware(['auth'])->group(function () {
 // Panel Admin (terlindungi)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Kelola Kamus (CRUD)
     Route::get('/kelola-kamus', [DashboardController::class, 'kelolaKamus'])->name('kelola-kamus');
+    Route::post('/kelola-kamus', [DashboardController::class, 'storeKata'])->name('kelola-kamus.store');
+    Route::put('/kelola-kamus/{kata}', [DashboardController::class, 'updateKata'])->name('kelola-kamus.update');
+    Route::delete('/kelola-kamus/{kata}', [DashboardController::class, 'destroyKata'])->name('kelola-kamus.destroy');
+
+    // Kelola Kategori (CRUD)
     Route::get('/kelola-kategori', [DashboardController::class, 'kelolaKategori'])->name('kelola-kategori');
+    Route::post('/kelola-kategori', [DashboardController::class, 'storeKategori'])->name('kelola-kategori.store');
+    Route::put('/kelola-kategori/{kategori}', [DashboardController::class, 'updateKategori'])->name('kelola-kategori.update');
+    Route::delete('/kelola-kategori/{kategori}', [DashboardController::class, 'destroyKategori'])->name('kelola-kategori.destroy');
+
+    // Kelola Pengguna (CRUD)
     Route::get('/kelola-pengguna', [DashboardController::class, 'kelolaPengguna'])->name('kelola-pengguna');
+    Route::post('/kelola-pengguna', [DashboardController::class, 'storeUser'])->name('kelola-pengguna.store');
+    Route::put('/kelola-pengguna/{user}', [DashboardController::class, 'updateUser'])->name('kelola-pengguna.update');
+    Route::delete('/kelola-pengguna/{user}', [DashboardController::class, 'destroyUser'])->name('kelola-pengguna.destroy');
+
+    // Informasi Website
     Route::get('/informasi-website', [DashboardController::class, 'informasiWebsite'])->name('informasi-website');
+    Route::post('/informasi-website', [DashboardController::class, 'updateInformasiWebsite'])->name('informasi-website.update');
+
+    // Laporan
     Route::get('/laporan', [DashboardController::class, 'laporan'])->name('laporan');
+
+    // Pengaturan
     Route::get('/pengaturan', [DashboardController::class, 'pengaturan'])->name('pengaturan');
+    Route::put('/pengaturan/profil', [DashboardController::class, 'updateProfil'])->name('pengaturan.profil');
+    Route::put('/pengaturan/password', [DashboardController::class, 'updatePassword'])->name('pengaturan.password');
+    Route::post('/pengaturan/sistem', [DashboardController::class, 'updateSistem'])->name('pengaturan.sistem');
 });

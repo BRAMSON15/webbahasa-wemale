@@ -10,72 +10,76 @@
         <!-- Left: Form Editor (8 cols) -->
         <div class="lg:col-span-8 space-y-6">
             
-            <!-- Identitas Umum -->
-            <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-xs">
-                <div class="flex items-center gap-3 pb-4 border-b border-slate-100 mb-5">
-                    <span class="w-8 h-8 rounded-lg bg-[#E1F0FD] text-[#133E87] flex items-center justify-center text-sm font-bold">
-                        <i class="fa-solid fa-globe"></i>
-                    </span>
-                    <div>
-                        <h3 class="font-extrabold text-base text-[#0C2B5E]">Identitas Utama Website</h3>
-                        <p class="text-xs text-slate-500">Nama platform, slogan kebudayaan, dan deskripsi publik</p>
+            <form action="{{ route('admin.informasi-website.update') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <!-- Identitas Umum -->
+                <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-xs">
+                    <div class="flex items-center gap-3 pb-4 border-b border-slate-100 mb-5">
+                        <span class="w-8 h-8 rounded-lg bg-[#E1F0FD] text-[#133E87] flex items-center justify-center text-sm font-bold">
+                            <i class="fa-solid fa-globe"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-[#0C2B5E]">Identitas Utama Website</h3>
+                            <p class="text-xs text-slate-500">Nama platform, slogan kebudayaan, dan deskripsi publik</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1.5">Nama Platform Kamus <span class="text-rose-500">*</span></label>
+                            <input type="text" name="nama_platform" required value="Kamus Bahasa Suku Wemale" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1.5">Slogan Kebudayaan</label>
+                            <input type="text" name="slogan" value="Lestarikan Bahasa Daerah, Perkuat Identitas Budaya" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1.5">Deskripsi Singkat Platform</label>
+                            <textarea name="deskripsi" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none leading-relaxed">Platform digital interaktif untuk mendokumentasikan, mempelajari, dan melestarikan kosakata, tata bahasa, serta tradisi tutur lisan Bahasa Suku Wemale di Pulau Seram, Provinsi Maluku.</textarea>
+                        </div>
                     </div>
                 </div>
 
-                <div class="space-y-4 text-xs">
-                    <div>
-                        <label class="block font-bold text-slate-700 mb-1.5">Nama Platform Kamus</label>
-                        <input type="text" value="Kamus Bahasa Suku Wemale" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none">
+                <!-- Visi & Misi -->
+                <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-xs">
+                    <div class="flex items-center gap-3 pb-4 border-b border-slate-100 mb-5">
+                        <span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
+                            <i class="fa-solid fa-compass"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-[#0C2B5E]">Visi & Misi Pelestarian</h3>
+                            <p class="text-xs text-slate-500">Arah strategis digitalisasi bahasa daerah Wemale</p>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block font-bold text-slate-700 mb-1.5">Slogan Kebudayaan</label>
-                        <input type="text" value="Lestarikan Bahasa Daerah, Perkuat Identitas Budaya" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none">
-                    </div>
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1.5">Visi Utama</label>
+                            <textarea name="visi" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none">Menjadi pusat dokumentasi digital bahasa dan kearifan lokal Suku Wemale yang terpercaya, mudah diakses generasi muda, dan berkelanjutan.</textarea>
+                        </div>
 
-                    <div>
-                        <label class="block font-bold text-slate-700 mb-1.5">Deskripsi Singkat Platform</label>
-                        <textarea rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none leading-relaxed">Platform digital interaktif untuk mendokumentasikan, mempelajari, dan melestarikan kosakata, tata bahasa, serta tradisi tutur lisan Bahasa Suku Wemale di Pulau Seram, Provinsi Maluku.</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visi & Misi -->
-            <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-100 shadow-xs">
-                <div class="flex items-center gap-3 pb-4 border-b border-slate-100 mb-5">
-                    <span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
-                        <i class="fa-solid fa-compass"></i>
-                    </span>
-                    <div>
-                        <h3 class="font-extrabold text-base text-[#0C2B5E]">Visi & Misi Pelestarian</h3>
-                        <p class="text-xs text-slate-500">Arah strategis digitalisasi bahasa daerah Wemale</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4 text-xs">
-                    <div>
-                        <label class="block font-bold text-slate-700 mb-1.5">Visi Utama</label>
-                        <textarea rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none">Menjadi pusat dokumentasi digital bahasa dan kearifan lokal Suku Wemale yang terpercaya, mudah diakses generasi muda, dan berkelanjutan.</textarea>
-                    </div>
-
-                    <div>
-                        <label class="block font-bold text-slate-700 mb-1.5">Misi Pelestarian</label>
-                        <textarea rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none leading-relaxed">1. Mendokumentasikan leksikon bahasa Wemale ragam Utara dan Selatan.
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1.5">Misi Pelestarian</label>
+                            <textarea name="misi" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-[#133E87]/20 focus:outline-none leading-relaxed">1. Mendokumentasikan leksikon bahasa Wemale ragam Utara dan Selatan.
 2. Menyediakan kamus daring interaktif dengan contoh kalimat dan terjemahan.
 3. Melibatkan para tetua adat, penutur asli, dan pemuda dalam pengayaan kosakata.
 4. Mencegah kepunahan bahasa daerah melalui kurikulum edukasi berbasis web.</textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Save Action Button -->
-            <div class="flex justify-end gap-3">
-                <button type="button" onclick="alert('Informasi website berhasil diperbarui!');" 
-                        class="bg-[#133E87] hover:bg-[#0C2B5E] text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
-                    <i class="fa-solid fa-floppy-disk text-xs"></i>
-                    <span>Simpan Perubahan Informasi</span>
-                </button>
-            </div>
+                <!-- Save Action Button -->
+                <div class="flex justify-end gap-3">
+                    <button type="submit" 
+                            class="bg-[#133E87] hover:bg-[#0C2B5E] text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk text-xs"></i>
+                        <span>Simpan Perubahan Informasi</span>
+                    </button>
+                </div>
+            </form>
 
         </div>
 

@@ -113,7 +113,7 @@
                             <input 
                                 type="text" 
                                 name="username" 
-                                value="{{ old('username', 'admin') }}"
+                                value="{{ old('username') }}"
                                 placeholder="Username" 
                                 required
                                 class="w-full bg-[#F8FAFC] border border-slate-200 focus:border-[#133E87] focus:bg-white rounded-xl py-2.5 sm:py-3 pl-11 pr-4 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#133E87]/15 transition"

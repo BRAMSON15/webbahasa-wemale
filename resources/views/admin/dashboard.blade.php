@@ -40,20 +40,12 @@
 </head>
 <body class="min-h-screen flex text-slate-800 antialiased">
 @php
-    $totalKata = $totalKata ?? 1248;
-    $totalPengguna = $totalPengguna ?? 342;
-    $totalKategori = $totalKategori ?? 24;
-    $tingkatAkses = $tingkatAkses ?? 98.5;
+    $totalKata = $totalKata ?? 0;
+    $totalPengguna = $totalPengguna ?? 0;
+    $totalKategori = $totalKategori ?? 0;
+    $tingkatAkses = $tingkatAkses ?? 0.0;
     $aktivitasTerbaru = $aktivitasTerbaru ?? collect();
-    $statistikHarian = $statistikHarian ?? [
-        ['label' => 'Sel', 'nilai' => 150],
-        ['label' => 'Rab', 'nilai' => 350],
-        ['label' => 'Kam', 'nilai' => 360],
-        ['label' => 'Jum', 'nilai' => 550],
-        ['label' => 'Sab', 'nilai' => 420],
-        ['label' => 'Min', 'nilai' => 640],
-        ['label' => 'Sen', 'nilai' => 842],
-    ];
+    $statistikHarian = $statistikHarian ?? [];
 @endphp
 
     <!-- ================= SIDEBAR ================= -->
