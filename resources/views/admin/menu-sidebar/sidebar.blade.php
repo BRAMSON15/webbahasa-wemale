@@ -53,7 +53,17 @@
                 <i class="fa-solid fa-chevron-right text-[10px] {{ request()->routeIs('admin.kelola-kategori') ? 'text-white' : 'text-slate-400' }}"></i>
             </a>
 
-            <!-- 4. Kelola Pengguna -->
+            <!-- 4. Kelola Kuis -->
+            <a href="{{ route('admin.kelola-kuis') }}" 
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.kelola-kuis*') ? 'bg-[#174A8B] text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/5' }}">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-list-check w-4 text-center {{ request()->routeIs('admin.kelola-kuis*') ? 'text-white' : 'text-slate-400' }}"></i>
+                    <span>Kelola Kuis</span>
+                </div>
+                <i class="fa-solid fa-chevron-right text-[10px] {{ request()->routeIs('admin.kelola-kuis*') ? 'text-white' : 'text-slate-400' }}"></i>
+            </a>
+
+            <!-- 5. Kelola Pengguna -->
             <a href="{{ route('admin.kelola-pengguna') }}" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.kelola-pengguna') ? 'bg-[#174A8B] text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/5' }}">
                 <div class="flex items-center gap-3">

@@ -6,6 +6,8 @@ use App\Enums\UserRole;
 use App\Models\Aktivitas;
 use App\Models\Kata;
 use App\Models\Kategori;
+use App\Models\RiwayatKuis;
+use App\Models\SoalKuis;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -371,6 +373,135 @@ class DashboardController extends Controller
         ]);
 
         return back()->with('success', 'Akun pengguna "'.$namaUser.'" berhasil dihapus.');
+    }
+
+    /**
+     * Tampilkan halaman kelola soal kuis bahasa Wemale.
+     */
+    public function kelolaKuis(): View
+    {
+        $soalList = SoalKuis::latest()->get();
+        $totalSoal = SoalKuis::count();
+        $totalAktif = SoalKuis::where('is_aktif', true)->count();
+        $totalRiwayat = RiwayatKuis::count();
+        $rataSkor = $totalRiwayat > 0 ? round(RiwayatKuis::avg('skor') ?? 0, 1) : 0;
+
+        return view('admin.menu-sidebar.kelola-kuis', [
+            'soalList' => $soalList,
+            'totalSoal' => $totalSoal,
+            'totalAktif' => $totalAktif,
+            'totalRiwayat' => $totalRiwayat,
+            'rataSkor' => $rataSkor,
+        ]);
+    }
+
+    /**
+     * Simpan soal kuis baru ke database.
+     */
+    public function storeSoalKuis(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'pertanyaan' => ['required', 'string'],
+            'pilihan_a' => ['required', 'string', 'max:255'],
+            'pilihan_b' => ['required', 'string', 'max:255'],
+            'pilihan_c' => ['required', 'string', 'max:255'],
+            'pilihan_d' => ['required', 'string', 'max:255'],
+            'kunci_jawaban' => ['required', 'string', 'in:A,B,C,D'],
+            'tingkat_kesulitan' => ['required', 'string', 'in:mudah,sedang,sulit'],
+            'pembahasan' => ['nullable', 'string'],
+            'is_aktif' => ['nullable', 'boolean'],
+        ], [
+            'pertanyaan.required' => 'Pertanyaan kuis wajib diisi.',
+            'pilihan_a.required' => 'Pilihan A wajib diisi.',
+            'pilihan_b.required' => 'Pilihan B wajib diisi.',
+            'pilihan_c.required' => 'Pilihan C wajib diisi.',
+            'pilihan_d.required' => 'Pilihan D wajib diisi.',
+            'kunci_jawaban.required' => 'Kunci jawaban wajib dipilih.',
+            'tingkat_kesulitan.required' => 'Tingkat kesulitan wajib dipilih.',
+        ]);
+
+        $soal = SoalKuis::create([
+            'pertanyaan' => $validated['pertanyaan'],
+            'pilihan_a' => $validated['pilihan_a'],
+            'pilihan_b' => $validated['pilihan_b'],
+            'pilihan_c' => $validated['pilihan_c'],
+            'pilihan_d' => $validated['pilihan_d'],
+            'kunci_jawaban' => strtoupper($validated['kunci_jawaban']),
+            'tingkat_kesulitan' => $validated['tingkat_kesulitan'],
+            'pembahasan' => $validated['pembahasan'] ?? null,
+            'is_aktif' => $request->boolean('is_aktif', true),
+        ]);
+
+        Aktivitas::create([
+            'user_id' => Auth::id(),
+            'tipe' => 'tambah',
+            'deskripsi' => 'Menambahkan soal kuis baru: "'.$soal->pertanyaan.'".',
+        ]);
+
+        return back()->with('success', 'Soal kuis baru berhasil ditambahkan.');
+    }
+
+    /**
+     * Perbarui data soal kuis.
+     */
+    public function updateSoalKuis(Request $request, SoalKuis $soalKuis): RedirectResponse
+    {
+        $validated = $request->validate([
+            'pertanyaan' => ['required', 'string'],
+            'pilihan_a' => ['required', 'string', 'max:255'],
+            'pilihan_b' => ['required', 'string', 'max:255'],
+            'pilihan_c' => ['required', 'string', 'max:255'],
+            'pilihan_d' => ['required', 'string', 'max:255'],
+            'kunci_jawaban' => ['required', 'string', 'in:A,B,C,D'],
+            'tingkat_kesulitan' => ['required', 'string', 'in:mudah,sedang,sulit'],
+            'pembahasan' => ['nullable', 'string'],
+            'is_aktif' => ['nullable', 'boolean'],
+        ], [
+            'pertanyaan.required' => 'Pertanyaan kuis wajib diisi.',
+            'pilihan_a.required' => 'Pilihan A wajib diisi.',
+            'pilihan_b.required' => 'Pilihan B wajib diisi.',
+            'pilihan_c.required' => 'Pilihan C wajib diisi.',
+            'pilihan_d.required' => 'Pilihan D wajib diisi.',
+            'kunci_jawaban.required' => 'Kunci jawaban wajib dipilih.',
+            'tingkat_kesulitan.required' => 'Tingkat kesulitan wajib dipilih.',
+        ]);
+
+        $soalKuis->update([
+            'pertanyaan' => $validated['pertanyaan'],
+            'pilihan_a' => $validated['pilihan_a'],
+            'pilihan_b' => $validated['pilihan_b'],
+            'pilihan_c' => $validated['pilihan_c'],
+            'pilihan_d' => $validated['pilihan_d'],
+            'kunci_jawaban' => strtoupper($validated['kunci_jawaban']),
+            'tingkat_kesulitan' => $validated['tingkat_kesulitan'],
+            'pembahasan' => $validated['pembahasan'] ?? null,
+            'is_aktif' => $request->boolean('is_aktif', true),
+        ]);
+
+        Aktivitas::create([
+            'user_id' => Auth::id(),
+            'tipe' => 'ubah',
+            'deskripsi' => 'Memperbarui soal kuis: "'.$soalKuis->pertanyaan.'".',
+        ]);
+
+        return back()->with('success', 'Soal kuis berhasil diperbarui.');
+    }
+
+    /**
+     * Hapus soal kuis.
+     */
+    public function destroySoalKuis(SoalKuis $soalKuis): RedirectResponse
+    {
+        $pertanyaan = $soalKuis->pertanyaan;
+        $soalKuis->delete();
+
+        Aktivitas::create([
+            'user_id' => Auth::id(),
+            'tipe' => 'hapus',
+            'deskripsi' => 'Menghapus soal kuis: "'.$pertanyaan.'".',
+        ]);
+
+        return back()->with('success', 'Soal kuis berhasil dihapus.');
     }
 
     /**

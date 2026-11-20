@@ -34,6 +34,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengunjung/beranda', [PengunjungController::class, 'index'])->name('pengunjung.beranda');
     Route::get('/beranda-pengunjung', [PengunjungController::class, 'index']);
     Route::post('/pengunjung/usulkan-kata', [PengunjungController::class, 'usulkanKata'])->name('pengunjung.usulkan-kata');
+
+    // Fitur Kuis Bahasa Wemale untuk Pengunjung
+    Route::get('/pengunjung/kuis', [PengunjungController::class, 'halamanKuis'])->name('pengunjung.kuis');
+    Route::post('/pengunjung/kuis/submit', [PengunjungController::class, 'submitKuis'])->name('pengunjung.kuis.submit');
 });
 
 // Panel Admin (terlindungi)
@@ -51,6 +55,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/kelola-kategori', [DashboardController::class, 'storeKategori'])->name('kelola-kategori.store');
     Route::put('/kelola-kategori/{kategori}', [DashboardController::class, 'updateKategori'])->name('kelola-kategori.update');
     Route::delete('/kelola-kategori/{kategori}', [DashboardController::class, 'destroyKategori'])->name('kelola-kategori.destroy');
+
+    // Kelola Kuis (CRUD)
+    Route::get('/kelola-kuis', [DashboardController::class, 'kelolaKuis'])->name('kelola-kuis');
+    Route::post('/kelola-kuis', [DashboardController::class, 'storeSoalKuis'])->name('kelola-kuis.store');
+    Route::put('/kelola-kuis/{soalKuis}', [DashboardController::class, 'updateSoalKuis'])->name('kelola-kuis.update');
+    Route::delete('/kelola-kuis/{soalKuis}', [DashboardController::class, 'destroySoalKuis'])->name('kelola-kuis.destroy');
 
     // Kelola Pengguna (CRUD)
     Route::get('/kelola-pengguna', [DashboardController::class, 'kelolaPengguna'])->name('kelola-pengguna');

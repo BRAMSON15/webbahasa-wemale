@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Aktivitas;
 use App\Models\Kata;
 use App\Models\Kategori;
+use App\Models\RiwayatKuis;
+use App\Models\SoalKuis;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -58,6 +60,98 @@ class PengunjungController extends Controller
             'totalKategori' => $totalKategori,
             'kataHariIni' => $kataHariIni,
             'kamusData' => $kamusData,
+        ]);
+    }
+
+    /**
+     * Tampilkan halaman pengerjaan kuis bahasa Wemale untuk pengunjung.
+     */
+    public function halamanKuis(): View
+    {
+        $soalKuis = SoalKuis::where('is_aktif', true)
+            ->inRandomOrder()
+            ->limit(10)
+            ->get();
+
+        $riwayatKuis = RiwayatKuis::where('user_id', Auth::id())
+            ->latest()
+            ->limit(10)
+            ->get();
+
+        $totalKuisDikerjakan = RiwayatKuis::where('user_id', Auth::id())->count();
+        $skorTertinggi = RiwayatKuis::where('user_id', Auth::id())->max('skor') ?? 0;
+
+        return view('pengunjung.kuis', [
+            'soalKuis' => $soalKuis,
+            'riwayatKuis' => $riwayatKuis,
+            'totalKuisDikerjakan' => $totalKuisDikerjakan,
+            'skorTertinggi' => $skorTertinggi,
+        ]);
+    }
+
+    /**
+     * Evaluasi jawaban kuis yang dikirimkan pengunjung.
+     */
+    public function submitKuis(Request $request): JsonResponse
+    {
+        $request->validate([
+            'jawaban' => ['required', 'array'],
+            'jawaban.*' => ['nullable', 'string', 'in:A,B,C,D'],
+        ]);
+
+        $jawabanPengguna = $request->input('jawaban');
+        $soalIds = array_keys($jawabanPengguna);
+
+        $soalList = SoalKuis::whereIn('id', $soalIds)->get()->keyBy('id');
+
+        $totalSoal = count($soalIds);
+        $jawabanBenar = 0;
+        $evaluasi = [];
+
+        foreach ($jawabanPengguna as $soalId => $jawaban) {
+            $soal = $soalList->get($soalId);
+            if (! $soal) {
+                continue;
+            }
+
+            $isCorrect = (strtoupper((string) $jawaban) === strtoupper($soal->kunci_jawaban));
+            if ($isCorrect) {
+                $jawabanBenar++;
+            }
+
+            $evaluasi[] = [
+                'soal_id' => $soal->id,
+                'pertanyaan' => $soal->pertanyaan,
+                'jawaban_pengguna' => $jawaban,
+                'kunci_jawaban' => $soal->kunci_jawaban,
+                'is_benar' => $isCorrect,
+                'pembahasan' => $soal->pembahasan,
+            ];
+        }
+
+        $skor = $totalSoal > 0 ? (int) round(($jawabanBenar / $totalSoal) * 100) : 0;
+
+        // Simpan riwayat kuis pengguna
+        RiwayatKuis::create([
+            'user_id' => Auth::id(),
+            'total_soal' => $totalSoal,
+            'jawaban_benar' => $jawabanBenar,
+            'skor' => $skor,
+        ]);
+
+        // Catat aktivitas
+        Aktivitas::create([
+            'user_id' => Auth::id(),
+            'tipe' => 'kuis',
+            'deskripsi' => 'Menyelesaikan kuis Bahasa Wemale dengan skor '.$skor.'/100 ('.$jawabanBenar.'/'.$totalSoal.' benar).',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'skor' => $skor,
+            'total_soal' => $totalSoal,
+            'jawaban_benar' => $jawabanBenar,
+            'evaluasi' => $evaluasi,
         ]);
     }
 

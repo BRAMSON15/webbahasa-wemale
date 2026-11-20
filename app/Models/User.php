@@ -50,4 +50,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Aktivitas::class);
     }
+
+    /**
+     * Riwayat kuis yang pernah dikerjakan pengguna.
+     *
+     * @return HasMany<RiwayatKuis>
+     */
+    public function riwayatKuis()
+    {
+        return $this->hasMany(RiwayatKuis::class);
+    }
 }

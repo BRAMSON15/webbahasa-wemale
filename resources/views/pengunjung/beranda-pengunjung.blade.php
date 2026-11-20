@@ -112,6 +112,11 @@
                     <span>Kategori</span>
                 </a>
 
+                <a href="{{ route('pengunjung.kuis') }}" class="text-slate-700 hover:text-[#133E87] px-3.5 py-2 font-medium flex items-center gap-2 text-sm transition hover:bg-slate-100/80 rounded-full">
+                    <i class="fa-solid fa-graduation-cap text-[#133E87]"></i>
+                    <span>Kuis Bahasa</span>
+                </a>
+
                 <button onclick="openFavoritesModal()" class="text-slate-700 hover:text-[#133E87] px-3.5 py-2 font-medium flex items-center gap-2 text-sm transition hover:bg-slate-100/80 rounded-full">
                     <i class="fa-solid fa-star text-amber-500"></i>
                     <span>Favorit Saya</span>
@@ -160,6 +165,10 @@
                         </div>
 
                         <div class="py-1 text-xs text-slate-700">
+                            <a href="{{ route('pengunjung.kuis') }}" class="w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center gap-2.5">
+                                <i class="fa-solid fa-graduation-cap text-[#133E87] w-4 text-center"></i>
+                                <span>Kuis Kosakata Wemale</span>
+                            </a>
                             <button onclick="openFavoritesModal(); toggleUserDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center gap-2.5">
                                 <i class="fa-solid fa-star text-amber-500 w-4 text-center"></i>
                                 <span>Kata Favorit Saya</span>
@@ -226,6 +235,10 @@
             <a href="#kategoriSection" onclick="toggleMobileMenu()" class="flex items-center gap-3 text-slate-700 font-medium text-sm py-1.5">
                 <i class="fa-solid fa-table-cells-large w-4 text-slate-400"></i>
                 <span>Kategori</span>
+            </a>
+            <a href="{{ route('pengunjung.kuis') }}" class="flex items-center gap-3 text-slate-700 font-medium text-sm py-1.5">
+                <i class="fa-solid fa-graduation-cap w-4 text-[#133E87]"></i>
+                <span>Kuis Bahasa</span>
             </a>
             <button onclick="openFavoritesModal(); toggleMobileMenu();" class="w-full text-left flex items-center gap-3 text-slate-700 font-medium text-sm py-1.5">
                 <i class="fa-solid fa-star w-4 text-amber-500"></i>
@@ -537,6 +550,33 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- ================= KUIS & EVALUASI BANNER ================= -->
+        <section class="max-w-[1536px] mx-auto px-4 sm:px-8 mb-16">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0C2B5E] via-[#133E87] to-[#2B7BE9] text-white p-6 sm:p-8 shadow-md">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="max-w-2xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-sky-200 text-xs font-bold mb-2.5">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>Fitur Evaluasi Belajar</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-white leading-tight">
+                            Uji Kemampuan Kosakata Bahasa Wemale Anda
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 mt-1.5 leading-relaxed">
+                            Ikuti kuis interaktif pilihan ganda, dapatkan skor langsung dan pembahasan lengkap untuk setiap kosakata.
+                        </p>
+                    </div>
+                    <div class="shrink-0">
+                        <a href="{{ route('pengunjung.kuis') }}" class="inline-flex items-center gap-2.5 bg-amber-400 hover:bg-amber-300 text-slate-900 px-6 py-3 rounded-2xl font-black text-xs shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Mulai Kuis Sekarang</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 

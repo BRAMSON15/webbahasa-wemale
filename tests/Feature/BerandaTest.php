@@ -144,7 +144,13 @@ class BerandaTest extends TestCase
         $resKategori->assertSee('Kelola Kategori Kosakata');
         $resKategori->assertSee('Daftar Kategori Kamus');
 
-        // 3. Kelola Pengguna
+        // 3. Kelola Kuis
+        $resKuis = $this->actingAs($admin)->get('/admin/kelola-kuis');
+        $resKuis->assertStatus(200);
+        $resKuis->assertSee('Kelola Kuis Bahasa Wemale');
+        $resKuis->assertSee('Daftar Soal Kuis');
+
+        // 4. Kelola Pengguna
         $resPengguna = $this->actingAs($admin)->get('/admin/kelola-pengguna');
         $resPengguna->assertStatus(200);
         $resPengguna->assertSee('Kelola Pengguna & Hak Akses');
