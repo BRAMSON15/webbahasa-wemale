@@ -25,6 +25,21 @@ class BerandaTest extends TestCase
         $response->assertSee('Cari Kata');
         $response->assertSee('Koleksi Istilah');
         $response->assertSee('Tentang Kamus');
+        $response->assertSee('Cara Menggunakan Kamus');
+        $response->assertSee('Ada kosakata yang ingin ditambahkan?');
+    }
+
+    public function test_help_and_contact_navigation_render_valid_targets_and_routes(): void
+    {
+        $response = $this->get(route('beranda'));
+
+        $response->assertOk();
+        $response->assertSee('id="bantuan"', false);
+        $response->assertSee('id="kontak"', false);
+        $response->assertSee('href="#bantuan"', false);
+        $response->assertSee('href="#kontak"', false);
+        $response->assertSee('href="'.route('login').'"', false);
+        $response->assertSee('href="'.route('register').'"', false);
     }
 
     /**

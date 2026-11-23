@@ -77,7 +77,7 @@
             
             <!-- Left: Logo & Title -->
             <div class="flex items-center gap-4">
-                <a href="{{ url('/') }}" class="flex items-center gap-3 group">
+                <a href="{{ route('beranda') }}" class="flex items-center gap-3 group">
                     <img src="{{ asset('img/logo-extracted.png') }}" alt="Kamus Bahasa Suku Wemale" class="h-11 sm:h-12 w-auto object-contain">
                 </a>
                 <div class="hidden sm:block h-8 w-px bg-slate-300"></div>
@@ -85,7 +85,7 @@
 
             <!-- Center: Navigation Links (Desktop) -->
             <nav class="hidden md:flex items-center gap-1 lg:gap-2">
-                <a href="{{ url('/') }}" class="bg-[#133E87] text-white px-5 py-2 rounded-full font-semibold flex items-center gap-2 text-sm shadow-sm transition hover:bg-[#0C2B5E]">
+                <a href="{{ route('beranda') }}" class="bg-[#133E87] text-white px-5 py-2 rounded-full font-semibold flex items-center gap-2 text-sm shadow-sm transition hover:bg-[#0C2B5E]">
                     <i class="fa-solid fa-house text-xs"></i>
                     <span>Beranda</span>
                 </a>
@@ -126,10 +126,10 @@
                         </a>
                     @endif
                 @else
-                    <a href="{{ url('/register') }}" class="text-slate-700 hover:text-[#133E87] px-4 py-2 font-semibold text-sm transition">
+                    <a href="{{ route('register') }}" class="text-slate-700 hover:text-[#133E87] px-4 py-2 font-semibold text-sm transition">
                         Daftar
                     </a>
-                    <a href="{{ url('/login') }}" class="bg-[#133E87] hover:bg-[#0C2B5E] text-white px-6 py-2 rounded-full font-semibold flex items-center gap-2 text-sm shadow-sm transition-all duration-200 hover:shadow">
+                    <a href="{{ route('login') }}" class="bg-[#133E87] hover:bg-[#0C2B5E] text-white px-6 py-2 rounded-full font-semibold flex items-center gap-2 text-sm shadow-sm transition-all duration-200 hover:shadow">
                         <i class="fa-solid fa-user text-xs"></i>
                         <span>Login</span>
                     </a>
@@ -144,7 +144,7 @@
                         <span>Akun</span>
                     </a>
                 @else
-                    <a href="{{ url('/login') }}" class="bg-[#133E87] text-white px-4 py-1.5 rounded-full font-semibold text-xs flex items-center gap-1.5">
+                    <a href="{{ route('login') }}" class="bg-[#133E87] text-white px-4 py-1.5 rounded-full font-semibold text-xs flex items-center gap-1.5">
                         <i class="fa-solid fa-user text-[10px]"></i>
                         <span>Login</span>
                     </a>
@@ -158,7 +158,7 @@
 
         <!-- Mobile Dropdown Menu -->
         <div id="mobileMenu" class="hidden md:hidden border-t border-slate-100 bg-white px-6 py-4 space-y-3">
-            <a href="{{ url('/') }}" class="flex items-center gap-3 text-[#133E87] font-bold text-sm py-1">
+            <a href="{{ route('beranda') }}" class="flex items-center gap-3 text-[#133E87] font-bold text-sm py-1">
                 <i class="fa-solid fa-house w-4"></i>
                 <span>Beranda</span>
             </a>
@@ -184,7 +184,7 @@
                         Buka Beranda Saya ({{ Auth::user()->name }})
                     </a>
                 @else
-                    <a href="{{ url('/register') }}" class="text-sm font-semibold text-[#133E87]">Daftar Akun Baru</a>
+                    <a href="{{ route('register') }}" class="text-sm font-semibold text-[#133E87]">Daftar Akun Baru</a>
                 @endauth
             </div>
         </div>
@@ -388,9 +388,58 @@
 
         </section>
 
-        <!-- Information / Bantuan Anchor Section -->
-        <div id="bantuan"></div>
-        <div id="kontak"></div>
+        <section id="bantuan" class="scroll-mt-24 max-w-[1536px] mx-auto px-4 sm:px-8 mb-16">
+            <div class="rounded-3xl bg-[#F4F9FE] border border-blue-100 p-6 sm:p-10">
+                <div class="max-w-3xl mb-7">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0C2B5E]">Cara Menggunakan Kamus</h2>
+                    <p class="text-slate-600 mt-2">Cari arti kata dan jelajahi kosakata Bahasa Suku Wemale dengan langkah sederhana.</p>
+                </div>
+                <div class="grid gap-4 md:grid-cols-3">
+                    <div class="bg-white rounded-2xl border border-slate-100 p-5">
+                        <span class="text-[#2B7BE9] font-bold text-sm">01</span>
+                        <h3 class="font-bold text-[#0C2B5E] mt-2">Cari kata</h3>
+                        <p class="text-sm text-slate-600 mt-1">Masukkan kata Wemale atau Indonesia pada kolom pencarian, lalu tekan Cari.</p>
+                        <button type="button" onclick="focusSearch()" class="text-sm font-semibold text-[#133E87] mt-3 hover:underline">Mulai mencari</button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-100 p-5">
+                        <span class="text-[#2B7BE9] font-bold text-sm">02</span>
+                        <h3 class="font-bold text-[#0C2B5E] mt-2">Jelajahi kata populer</h3>
+                        <p class="text-sm text-slate-600 mt-1">Pilih salah satu kata populer untuk melihat arti dan contoh penggunaannya.</p>
+                        <a href="#popularSection" class="inline-block text-sm font-semibold text-[#133E87] mt-3 hover:underline">Lihat kata populer</a>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-100 p-5">
+                        <span class="text-[#2B7BE9] font-bold text-sm">03</span>
+                        <h3 class="font-bold text-[#0C2B5E] mt-2">Usulkan kosakata</h3>
+                        <p class="text-sm text-slate-600 mt-1">Masuk atau buat akun untuk mengirim usulan kata melalui menu pengunjung.</p>
+                        <a href="{{ route('register') }}" class="inline-block text-sm font-semibold text-[#133E87] mt-3 hover:underline">Buat akun</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak" class="scroll-mt-24 max-w-[1536px] mx-auto px-4 sm:px-8 mb-16">
+            <div class="rounded-3xl bg-[#0C2B5E] text-white p-6 sm:p-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div class="max-w-2xl">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold">Ada kosakata yang ingin ditambahkan?</h2>
+                    <p class="text-blue-100 mt-2">Kirim usulan kata melalui akun pengunjung agar dapat ditinjau oleh pengelola kamus.</p>
+                </div>
+                @auth
+                    <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : route('pengunjung.beranda') }}" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#133E87] hover:bg-blue-50 transition shrink-0">
+                        <span>{{ Auth::user()->isAdmin() ? 'Buka Dashboard' : 'Buka Beranda Saya' }}</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                @else
+                    <div class="flex flex-wrap gap-3 shrink-0">
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/50 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition">
+                            Masuk
+                        </a>
+                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#133E87] hover:bg-blue-50 transition">
+                            Buat akun
+                        </a>
+                    </div>
+                @endauth
+            </div>
+        </section>
 
     </main>
 
