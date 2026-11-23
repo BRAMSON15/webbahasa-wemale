@@ -22,6 +22,10 @@ Route::get('/cari', [BerandaController::class, 'cari'])->name('cari');
 
 // Autentikasi
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::get('/login/pengunjung', [AuthController::class, 'showPengunjungLogin'])->name('login.pengunjung');
+Route::get('/login-pengunjung', [AuthController::class, 'showPengunjungLogin']);
+Route::get('/login/admin', [AuthController::class, 'showAdminLogin'])->name('login.admin');
+Route::get('/admin/login', [AuthController::class, 'showAdminLogin']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

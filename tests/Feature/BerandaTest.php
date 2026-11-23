@@ -70,17 +70,42 @@ class BerandaTest extends TestCase
     }
 
     /**
-     * Test that login page is accessible.
+     * Test that public login page is accessible and shows visitor login.
      */
     public function test_login_page_is_accessible(): void
     {
         $response = $this->get('/login');
 
         $response->assertStatus(200);
-        $response->assertSee('Login Admin');
+        $response->assertSee('Login Pengunjung');
+        $response->assertDontSee('Login Admin');
         $response->assertSee('login-left-clean.png');
-        $response->assertSee('Selamat Datang di Panel Admin');
+        $response->assertSee('Selamat Datang di Kamus Bahasa Wemale');
         $response->assertSee('Kembali ke Beranda');
+    }
+
+    /**
+     * Test dedicated visitor login route.
+     */
+    public function test_dedicated_pengunjung_login_route_is_accessible(): void
+    {
+        $response = $this->get('/login/pengunjung');
+
+        $response->assertStatus(200);
+        $response->assertSee('Login Pengunjung');
+        $response->assertSee('Selamat Datang di Kamus Bahasa Wemale');
+    }
+
+    /**
+     * Test dedicated admin login route.
+     */
+    public function test_dedicated_admin_login_route_is_accessible(): void
+    {
+        $response = $this->get('/login/admin');
+
+        $response->assertStatus(200);
+        $response->assertSee('Login Admin');
+        $response->assertSee('Selamat Datang di Panel Admin');
     }
 
     /**

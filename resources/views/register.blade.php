@@ -348,7 +348,7 @@
                         </div>
 
                         <!-- Google Signup Button -->
-                        <div>
+                        <!-- <div>
                             <button 
                                 type="button" 
                                 onclick="alert('Fitur pendaftaran melalui Akun Google sedang dalam integrasi.')"
@@ -362,7 +362,7 @@
                                 </svg>
                                 <span>Daftar dengan Google</span>
                             </button>
-                        </div>
+                        </div> -->
 
                         <!-- Footer Link: Sudah punya akun? Login di sini -->
                         <div class="text-center mt-3.5">

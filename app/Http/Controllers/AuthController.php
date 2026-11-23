@@ -12,11 +12,31 @@ use Illuminate\Validation\Rules\Password;
 class AuthController extends Controller
 {
     /**
-     * Tampilkan halaman login admin.
+     * Tampilkan halaman login utama (dengan opsi Pengunjung & Admin).
      */
-    public function showLogin()
+    public function showLogin(Request $request)
     {
-        return view('login');
+        $type = $request->query('type', 'pengunjung');
+
+        return view('login', [
+            'type' => in_array($type, ['admin', 'pengunjung']) ? $type : 'pengunjung',
+        ]);
+    }
+
+    /**
+     * Tampilkan halaman login khusus pengunjung & pengguna umum.
+     */
+    public function showPengunjungLogin()
+    {
+        return view('login', ['type' => 'pengunjung']);
+    }
+
+    /**
+     * Tampilkan halaman login khusus administrator.
+     */
+    public function showAdminLogin()
+    {
+        return view('login', ['type' => 'admin']);
     }
 
     /**

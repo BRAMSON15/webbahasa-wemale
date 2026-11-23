@@ -39,7 +39,7 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #FFFFFF;
+            background-color: #F8FAFC;
             color: #1E293B;
             overflow-x: hidden;
         }
@@ -47,7 +47,6 @@
         .hero-banner-container {
             position: relative;
             width: 100%;
-            max-width: 1536px;
             margin: 0 auto;
         }
 
@@ -69,7 +68,7 @@
         }
     </style>
 </head>
-<body class="bg-white antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-[#F8FAFC] antialiased min-h-screen flex flex-col justify-between">
 
     <!-- ================= NAVBAR ================= -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-2xs">
@@ -194,31 +193,31 @@
     <main class="flex-grow">
 
         <!-- ================= HERO SECTION ================= -->
-        <section class="relative w-full bg-[#f8fbff] overflow-hidden">
+        <section class="relative w-full bg-gradient-to-b from-[#eaf4fd] via-[#f4f9fe] to-[#F8FAFC] overflow-hidden">
             
-            <!-- Desktop Layout (>= 1024px): 1:1 Pixel-Perfect Graphic Banner with Overlay -->
+            <!-- Desktop Layout (>= 1024px): 1:1 Pixel-Perfect Graphic Banner with Overlay (Full Bleed Edge-to-Edge) -->
             <div class="hidden lg:block hero-banner-container relative select-none">
                 <img 
-                    src="{{ asset('img/hero-crop.png') }}" 
+                    src="{{ asset('img/hero-crop.png') }}?v={{ filemtime(public_path('img/hero-crop.png')) }}" 
                     alt="Kamus Bahasa Suku Wemale Hero" 
                     class="w-full h-auto block select-none pointer-events-none"
                 />
 
-                <!-- Functional Search Form Overlay positioned precisely over the graphic search bar (top: 73.3%, width: 56.4%) -->
-                <div class="absolute left-1/2 -translate-x-1/2 top-[73.3%] w-[56.4%] max-w-[866px] z-20">
+                <!-- Functional Search Form Overlay (Clean, Single Search Bar) -->
+                <div class="absolute left-1/2 -translate-x-1/2 top-[72%] w-full max-w-2xl lg:max-w-3xl px-4 z-20">
                     <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('searchInputDesktop').value);" class="w-full">
-                        <div class="relative flex items-center bg-white rounded-full shadow-xl px-5 py-3 border border-slate-100 transition-all focus-within:ring-3 focus-within:ring-[#133E87]/20 focus-within:border-[#133E87]">
+                        <div class="relative flex items-center bg-white rounded-full shadow-2xl px-5 py-2.5 sm:py-3 border border-slate-200/90 transition-all focus-within:ring-4 focus-within:ring-[#133E87]/20 focus-within:border-[#133E87]">
                             <i class="fa-solid fa-magnifying-glass text-slate-400 text-lg mr-3 ml-2"></i>
                             <input 
                                 type="text" 
                                 id="searchInputDesktop"
                                 placeholder="Masukkan kata dalam Bahasa Wemale atau Indonesia..." 
-                                class="w-full bg-transparent text-slate-800 placeholder-slate-400 text-base focus:outline-none font-normal"
+                                class="w-full bg-transparent text-slate-800 placeholder-slate-400 text-sm sm:text-base focus:outline-none font-normal"
                                 autocomplete="off"
                             />
                             <button 
                                 type="submit" 
-                                class="bg-[#133E87] hover:bg-[#0C2B5E] text-white font-semibold px-8 py-2.5 rounded-full flex items-center gap-2 transition-all cursor-pointer text-base shrink-0 shadow-md ml-2 active:scale-95"
+                                class="bg-[#133E87] hover:bg-[#0C2B5E] text-white font-bold px-7 sm:px-8 py-2.5 sm:py-3 rounded-full flex items-center gap-2 transition-all cursor-pointer text-sm sm:text-base shrink-0 shadow-md ml-2 active:scale-95"
                             >
                                 <span>Cari</span>
                                 <i class="fa-solid fa-arrow-right text-xs"></i>
@@ -229,7 +228,7 @@
             </div>
 
             <!-- Mobile & Tablet Layout (< 1024px): Responsive, Crisp & Perfectly Legible -->
-            <div class="lg:hidden relative w-full px-4 py-8 sm:py-12 bg-gradient-to-b from-[#eaf4fd] via-[#f4f9fe] to-white">
+            <div class="lg:hidden relative w-full px-4 py-8 sm:py-12 bg-gradient-to-b from-[#eaf4fd] via-[#f4f9fe] to-[#F8FAFC]">
                 <div class="max-w-2xl mx-auto text-center relative z-10">
                     <span class="text-[#0C2B5E] font-semibold text-base sm:text-lg">Selamat Datang di</span>
                     <h1 class="text-3xl sm:text-5xl font-black text-[#0C2B5E] tracking-tight mt-1 mb-2 leading-tight">
@@ -264,11 +263,11 @@
         </section>
 
         <!-- ================= 4 QUICK ACTION CARDS ================= -->
-        <section id="kamus" class="max-w-[1536px] mx-auto px-4 sm:px-8 mt-6 lg:-mt-4 relative z-30 mb-12">
+        <section id="kamus" class="max-w-[1536px] mx-auto px-4 sm:px-8 -mt-8 sm:-mt-10 lg:-mt-14 relative z-30 mb-14">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
                 
                 <!-- Card 1: Cari Kata -->
-                <div onclick="focusSearch()" class="card-custom bg-white/95 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex items-center gap-4 relative group cursor-pointer">
+                <div onclick="focusSearch()" class="card-custom bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex items-center gap-4 relative group cursor-pointer">
                     <div class="w-14 h-14 rounded-full bg-[#E1F0FD] flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-book-open text-2xl text-[#133E87]"></i>
                     </div>
@@ -286,7 +285,7 @@
                 </div>
 
                 <!-- Card 2: Kata Populer -->
-                <div onclick="scrollToPopular()" class="card-custom bg-white/95 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex items-center gap-4 relative group cursor-pointer">
+                <div onclick="scrollToPopular()" class="card-custom bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex items-center gap-4 relative group cursor-pointer">
                     <div class="w-14 h-14 rounded-full bg-[#FEF3C7] flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-star text-2xl text-[#F59E0B]"></i>
                     </div>
@@ -304,7 +303,7 @@
                 </div>
 
                 <!-- Card 3: Koleksi Istilah -->
-                <div onclick="showCategoryList()" class="card-custom bg-white/95 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex items-center gap-4 relative group cursor-pointer">
+                <div onclick="showCategoryList()" class="card-custom bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex items-center gap-4 relative group cursor-pointer">
                     <div class="w-14 h-14 rounded-full bg-[#D1FAE5] flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-bookmark text-2xl text-[#10B981]"></i>
                     </div>
@@ -322,7 +321,7 @@
                 </div>
 
                 <!-- Card 4: Tentang Kamus -->
-                <div id="tentang" onclick="showAboutModal()" class="card-custom bg-white/95 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex items-center gap-4 relative group cursor-pointer">
+                <div id="tentang" onclick="showAboutModal()" class="card-custom bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex items-center gap-4 relative group cursor-pointer">
                     <div class="w-14 h-14 rounded-full bg-[#EDE9FE] flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-circle-info text-2xl text-[#7C3AED]"></i>
                     </div>
@@ -343,49 +342,78 @@
         </section>
 
         <!-- ================= KATA POPULER SECTION ================= -->
-        <section id="popularSection" class="max-w-[1536px] mx-auto px-4 sm:px-8 mt-12 mb-16">
+        <section id="popularSection" class="max-w-[1536px] mx-auto px-4 sm:px-8 mb-14">
             
-            <!-- Section Header -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div class="flex items-start gap-3">
-                    <span class="w-1.5 h-8 bg-[#133E87] rounded-full shrink-0 mt-0.5"></span>
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+                <!-- Section Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div class="flex items-start gap-3">
+                        <span class="w-1.5 h-8 bg-[#133E87] rounded-full shrink-0 mt-0.5"></span>
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0C2B5E] tracking-tight">
+                                Kata Populer
+                            </h2>
+                            <p class="text-slate-500 text-sm mt-0.5">
+                                Kata-kata yang paling sering dicari oleh pengguna
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right button: Lihat Semua -->
                     <div>
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0C2B5E] tracking-tight">
-                            Kata Populer
-                        </h2>
-                        <p class="text-slate-500 text-sm mt-0.5">
-                            Kata-kata yang paling sering dicari oleh pengguna
-                        </p>
+                        <button onclick="showAllWordsModal()" class="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-[#133E87] text-[#133E87] hover:bg-[#133E87] hover:text-white font-medium text-sm transition-all duration-200 cursor-pointer shadow-2xs">
+                            <span>Lihat Semua</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Right button: Lihat Semua -->
-                <div>
-                    <button onclick="showAllWordsModal()" class="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-[#133E87] text-[#133E87] hover:bg-[#133E87] hover:text-white font-medium text-sm transition-all duration-200 cursor-pointer shadow-2xs">
-                        <span>Lihat Semua</span>
-                        <i class="fa-solid fa-arrow-right text-xs"></i>
-                    </button>
+                <!-- Tag Pills Row (kata populer murni dari basis data) -->
+                <div class="flex flex-wrap gap-3 sm:gap-3.5 items-center">
+                    @forelse($kataPopuler as $item)
+                        @php
+                            $namaKata = is_object($item) ? ($item->kata_wemale ?? '') : $item;
+                        @endphp
+                        <button 
+                            type="button"
+                            onclick="showWordDetail({{ json_encode($namaKata) }})"
+                            class="px-6 sm:px-7 py-2.5 rounded-full bg-[#DCEBFB] hover:bg-[#c2deff] text-[#133E87] font-semibold text-sm sm:text-base transition-all duration-150 cursor-pointer shadow-2xs active:scale-95"
+                        >
+                            {{ $namaKata }}
+                        </button>
+                    @empty
+                        <p class="text-sm text-slate-400 italic">Belum ada kosakata populer yang ditandai di dalam sistem.</p>
+                    @endforelse
                 </div>
             </div>
 
-            <!-- Tag Pills Row (kata populer murni dari basis data) -->
-            <div class="flex flex-wrap gap-3 sm:gap-3.5 items-center">
-                @forelse($kataPopuler as $item)
-                    @php
-                        $namaKata = is_object($item) ? ($item->kata_wemale ?? '') : $item;
-                    @endphp
-                    <button 
-                        type="button"
-                        onclick="showWordDetail({{ json_encode($namaKata) }})"
-                        class="px-6 sm:px-7 py-2.5 rounded-full bg-[#DCEBFB] hover:bg-[#c2deff] text-[#133E87] font-semibold text-sm sm:text-base transition-all duration-150 cursor-pointer shadow-2xs active:scale-95"
-                    >
-                        {{ $namaKata }}
-                    </button>
-                @empty
-                    <p class="text-sm text-slate-400 italic">Belum ada kosakata populer yang ditandai di dalam sistem.</p>
-                @endforelse
-            </div>
+        </section>
 
+        <!-- ================= KUIS & EVALUASI BANNER ================= -->
+        <section class="max-w-[1536px] mx-auto px-4 sm:px-8 mb-14">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0C2B5E] via-[#133E87] to-[#2B7BE9] text-white p-6 sm:p-8 shadow-md">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="max-w-2xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-sky-200 text-xs font-bold mb-2.5">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>Fitur Kuis Interaktif</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-white leading-tight">
+                            Uji Pemahaman Kosakata Bahasa Wemale
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 mt-1.5 leading-relaxed">
+                            Ikuti kuis pilihan ganda untuk menguji sejauh mana penguasaan bahasa daerah suku Wemale Anda dengan evaluasi skor langsung.
+                        </p>
+                    </div>
+                    <div class="shrink-0">
+                        <a href="{{ route('login') }}" class="inline-flex items-center gap-2.5 bg-amber-400 hover:bg-amber-300 text-slate-900 px-6 py-3 rounded-2xl font-black text-xs shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Mulai Kuis Sekarang</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="bantuan" class="scroll-mt-24 max-w-[1536px] mx-auto px-4 sm:px-8 mb-16">
@@ -444,8 +472,8 @@
     </main>
 
     <!-- ================= FOOTER BANNER ================= -->
-    <footer class="w-full overflow-hidden select-none bg-white">
-        <div class="w-full max-w-[1536px] mx-auto">
+    <footer class="w-full overflow-hidden select-none bg-white border-t border-slate-100">
+        <div class="w-full">
             <!-- Exact clean footer graphic with wave, ethnic motif, trees and "Bahasa Kita, Warisan Kita" -->
             <img 
                 src="{{ asset('img/footer-clean.png') }}" 
