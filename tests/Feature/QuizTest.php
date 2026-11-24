@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use App\Models\SoalKuis;
 use App\Models\User;
+use Database\Seeders\SoalKuisSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,6 +35,50 @@ class QuizTest extends TestCase
             'email' => 'pengunjung_kuis@wemale.test',
             'password' => bcrypt('password123'),
             'role' => UserRole::Pengguna,
+        ]);
+    }
+
+    public function test_seeder_populates_the_quiz_and_can_run_repeatedly(): void
+    {
+        SoalKuis::create([
+            'pertanyaan' => 'Apa arti dari kata "Mama" dalam Bahasa Suku Wemale?',
+            'pilihan_a' => 'Anak perempuan',
+            'pilihan_b' => 'Ibu',
+            'pilihan_c' => 'Nenek buyut',
+            'pilihan_d' => 'Saudara perempuan',
+            'kunci_jawaban' => 'B',
+        ]);
+
+        SoalKuis::create([
+            'pertanyaan' => 'Soal tambahan buatan admin',
+            'pilihan_a' => 'A',
+            'pilihan_b' => 'B',
+            'pilihan_c' => 'C',
+            'pilihan_d' => 'D',
+            'kunci_jawaban' => 'A',
+        ]);
+
+        $this->seed(SoalKuisSeeder::class);
+        $this->seed(SoalKuisSeeder::class);
+
+        $this->assertDatabaseCount('soal_kuis', 101);
+        $this->assertDatabaseMissing('soal_kuis', [
+            'pertanyaan' => 'Apa arti dari kata "Mama" dalam Bahasa Suku Wemale?',
+        ]);
+        $this->assertDatabaseHas('soal_kuis', [
+            'pertanyaan' => 'SAI artinya...',
+            'pilihan_b' => '1',
+            'kunci_jawaban' => 'B',
+            'tingkat_kesulitan' => 'mudah',
+        ]);
+        $this->assertDatabaseHas('soal_kuis', [
+            'pertanyaan' => 'Angka 10 dalam Bahasa Wemale adalah...',
+            'pilihan_d' => 'Putusa',
+            'kunci_jawaban' => 'D',
+            'tingkat_kesulitan' => 'sulit',
+        ]);
+        $this->assertDatabaseHas('soal_kuis', [
+            'pertanyaan' => 'Soal tambahan buatan admin',
         ]);
     }
 
